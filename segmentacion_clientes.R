@@ -7,7 +7,7 @@ library(cluster)
 
 # 1. Carga del dataset (Mall_Customers.csv esta junto a este script)
 # TODO: importa el CSV con read.csv() y examina las primeras filas con head()
-file1 <- Mall_Customers.csv
+file1 <- "Mall_Customers.csv"
 mall <- read.csv(file1)
 head(mall)
 
@@ -20,7 +20,7 @@ dim(mall)
 str(mall)
 summary(mall)
 
-mall <- mall %>% mutate(Genre = case_when(Genre == "masculino" ~ 1, Genre == "femenino" ~ 0))
+mall <- mall %>% mutate(Genre = case_when(Genre == "Male" ~ 1, Genre == "Female" ~ 0))
 mall <- mall %>% scale(Annual_Income, Spending_Score)
 
 # 3. Exploracion de variables (opcional)
@@ -38,7 +38,12 @@ for (i in 1:31) {
     # ajustamos un K-Means con 2 segmentos
     out1 <- kmeans(mall, 
                   centers=j)
-}
+    tot  <- out1$withinss
+
+    fviz_nbclust(mall, kmeans, method = "wss") +
+      geom_vline(xintercept = 4, linetype = 2)
+    
+    }
   
 }
 
